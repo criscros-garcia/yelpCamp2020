@@ -1,0 +1,6 @@
+<h1>Campgrounds All over the world¡</h1>
+
+<% campgrounds.forEach(function(campground){ %>
+  <h3> <%= campground.name %> </h3>
+  <img src="<%= campground.url %>" alt="" style: width="300px">
+<% }); %>
