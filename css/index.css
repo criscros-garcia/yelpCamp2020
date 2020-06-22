@@ -1,14 +1,6 @@
-.contenedor{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  border: 1px solid gold;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-.caja{
-  width: 350px;
-  /* flex-basis: 33%; */
+.formulario{
+  width: 40%;
+  margin: 25px auto;
+  text-align: center;
 }
 
