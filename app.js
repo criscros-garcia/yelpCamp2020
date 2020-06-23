@@ -1,6 +1,18 @@
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
+let mongoose = require('mongoose');
+
+mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true });
+
+let campSchema = new mongoose.Schema(
+  {
+    name: String,
+    url:  String,
+  }
+);
+
+let Campground = mongoose.model("Campground", campSchema);
 
 var campgrounds = [
   {name: "Winsconsin", url: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"},
