@@ -54,6 +54,16 @@ app.post('/campgrounds', function(req, res){
   });
 });
 
+app.get('/campgrounds/:id', function(req, res){
+  Campground.findById(req.params.id, function(err, foundCamp){
+    if(err){
+      console.log("Can't be found");
+    }else{
+      res.render('show', {campground:foundCamp});
+    }
+  });
+});
+
 
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
   console.log("YelpCamp server has started!");

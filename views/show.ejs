@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+
+<div class="container">
+
+  <div class="card text-center mb-4">
+    <div class="card-body">
+      <h3 class="card-title"> <%= campground.name %> </h3>
+      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Mollitia quibusdam magnam ratione earum. Saepe, veniam vitae exercitationem sunt praesentium eos sint aperiam voluptatibus harum, nemo, dicta commodi necessitatibus corporis corrupti.</p>
+    </div>
+    <img class='card-img-bottom' src="<%= campground.url %>" alt="">
+  </div>
+  
+  <div class="btn-group d-flex" role="group">
+    <a href='/campgrounds' class="btn btn-primary  w-100">Go Back</a>
+    <a href='/campgrounds' class="btn btn-info     w-100">Make a Comment</a>
+    <a href='/campgrounds' class="btn btn-danger   w-100">Delete</a>
+  </div>
+
+</div>
+
+
+
+<%- include('partials/footer') %>
