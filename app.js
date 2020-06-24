@@ -3,7 +3,7 @@ let app = express();
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 
-mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true , useUnifiedTopology: true });
 
 let campSchema = new mongoose.Schema(
   {
@@ -14,15 +14,6 @@ let campSchema = new mongoose.Schema(
 
 let Campground = mongoose.model("Campground", campSchema);
 
-var campgrounds = [
-  {name: "Winsconsin", url: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"},
-  {name: "New York", url: "http://www.totalescape.com/GIFS/waterz/lakes/crowley/crowleylake.JPG"},
-  {name: "California", url: "https://image.shutterstock.com/image-photo/camping-under-stars-bonfire-tent-260nw-639243067.jpg"},
-  {name: "Winsconsin", url: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"},
-  {name: "New York", url: "http://www.totalescape.com/GIFS/waterz/lakes/crowley/crowleylake.JPG"},
-  {name: "California", url: "https://image.shutterstock.com/image-photo/camping-under-stars-bonfire-tent-260nw-639243067.jpg"}
-]
-
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/css', express.static('css'));
@@ -32,9 +23,15 @@ app.get("/", function(req, res){
 });
 
 app.get("/campgrounds", function(req, res){
+  Campground.find({}, function(err, campgrounds){
+    if(err){
+      console.log(err);
+      console.log("Something went wrong");
+    }else{
+      res.render('index', {campgrounds:campgrounds});
+    }
+  });
   
-  
-  res.render('index', {campgrounds:campgrounds});
 });
 
 app.get('/campgrounds/new', function(req, res){
@@ -44,10 +41,17 @@ app.get('/campgrounds/new', function(req, res){
 app.post('/campgrounds', function(req, res){
   let name =  req.body.name;
   let url  =  req.body.image;
-  var newCampground = {name:name, url:url}
-  campgrounds.push(newCampground);
+  let newCampground = {name:name, url:url}
 
-  res.redirect('campgrounds');
+  Campground.create(newCampground, function(err, newCreated){
+    if(err){
+      console.log('Error creating a Campground¡');
+      console.log(err);
+    }else{
+      console.log("Campground created succesfully¡")
+      res.redirect('campgrounds');
+    }
+  });
 });
 
 
