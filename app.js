@@ -9,6 +9,7 @@ let campSchema = new mongoose.Schema(
   {
     name: String,
     url:  String,
+    description: String
   }
 );
 
@@ -41,7 +42,8 @@ app.get('/campgrounds/new', function(req, res){
 app.post('/campgrounds', function(req, res){
   let name =  req.body.name;
   let url  =  req.body.image;
-  let newCampground = {name:name, url:url}
+  let description = req.body.description;
+  let newCampground = {name:name, url:url, description:description}
 
   Campground.create(newCampground, function(err, newCreated){
     if(err){
