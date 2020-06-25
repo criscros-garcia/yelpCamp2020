@@ -3,18 +3,9 @@ let app = express();
 let methodOverride = require('method-override');
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
+let Campground = require('./models/campground');
 
 mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true , useUnifiedTopology: true });
-
-let campSchema = new mongoose.Schema(
-  {
-    name: String,
-    url:  String,
-    description: String
-  }
-);
-
-let Campground = mongoose.model("Campground", campSchema);
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
