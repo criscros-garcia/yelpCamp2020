@@ -92,6 +92,17 @@ app.put('/campgrounds/:id', function(req, res){
   });
 });
 
+app.delete('/campgrounds/:id', function(req, res){
+  Campground.findByIdAndDelete(req.params.id, function(err){
+    if(err){
+      console.log("Error triying to eliminate¡");
+      res.redirect("/campgrounds/+req.params.id");
+    }else{
+      res.redirect('/campgrounds');
+    }
+  });
+});
+
 
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
   console.log("YelpCamp server has started!");

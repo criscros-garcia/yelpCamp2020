@@ -10,11 +10,20 @@
     <img class='card-img-bottom' src="<%= campground.url %>" alt="">
   </div>
   
-  <div class="btn-group d-flex" role="group">
-    <a href='/campgrounds' class="btn btn-primary  w-100">Go Back</a>
-    <a href='/campgrounds' class="btn btn-info     w-100">Make a Comment</a>
-    <a href='/campgrounds' class="btn btn-danger   w-100">Delete</a>
+  <div class="my-btn">
+    <div class="btn-group d-flex" role="group">
+      <a href='/campgrounds/<%= campground._id%>/edit' class='btn btn-primary  w-100'>Edit</a>
+      <a href='/campgrounds' class="btn btn-info     w-100">Make a Comment</a>
+    </div>
+      
+    <form action="/campgrounds/<%= campground._id%>?_method=delete" method='POST'>
+      <button class="btn btn-danger w-100">Delete</button>
+    </form>
   </div>
+  
+  <p>
+    <a href='/campgrounds'>Go Back</a>
+  </p>
 
 </div>
 
