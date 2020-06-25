@@ -22,7 +22,11 @@
           <img class='card-img-top' src="<%= campground.url %>" alt="">
           <div class="card-body">
             <h3 class="card-title"> <%= campground.name %> </h3>
-            <p><a class='btn btn-primary btn-block' href="/campgrounds/<%= campground._id%>">View More¡</a></p>
+            <div class="btn-group d-flex" role="group">
+              <a class='btn btn-primary w-100' href="/campgrounds/<%= campground._id%>">View More¡</a>
+              <a class='btn btn-danger  w-100' href="/campgrounds/<%= campground._id%>/edit">Edit</a>
+            </div>
+            </p>
           </div>
         </div>
       </div>

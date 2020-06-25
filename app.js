@@ -66,6 +66,20 @@ app.get('/campgrounds/:id', function(req, res){
   });
 });
 
+app.get('/campgrounds/:id/edit', function(req, res){
+  Campground.findById(req.params.id, function(err, foundToUpdate){
+    if(err){
+      console.log('Could not be found to update¡'+ err);
+    }else{
+      res.render('edit', {campgrounds: foundToUpdate})
+    }
+  });
+});
+
+app.put('/campgrounds/:id', function(req, res){
+  console.log("Someonw tries to edit");
+});
+
 
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
   console.log("YelpCamp server has started!");
