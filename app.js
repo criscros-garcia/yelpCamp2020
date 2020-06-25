@@ -1,5 +1,6 @@
 let express = require('express');
 let app = express();
+let methodOverride = require('method-override');
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 
@@ -17,6 +18,7 @@ let Campground = mongoose.model("Campground", campSchema);
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride('_method'));
 app.use('/css', express.static('css'));
 
 app.get("/", function(req, res){
@@ -40,10 +42,12 @@ app.get('/campgrounds/new', function(req, res){
 });
 
 app.post('/campgrounds', function(req, res){
-  let name =  req.body.name;
-  let url  =  req.body.image;
-  let description = req.body.description;
-  let newCampground = {name:name, url:url, description:description}
+  // let name =  req.body.name;
+  // let url  =  req.body.image;
+  // let description = req.body.description;
+  // let newCampground = {name:name, url:url, description:description}
+
+  let newCampground = req.body.campground;
 
   Campground.create(newCampground, function(err, newCreated){
     if(err){
@@ -71,13 +75,21 @@ app.get('/campgrounds/:id/edit', function(req, res){
     if(err){
       console.log('Could not be found to update¡'+ err);
     }else{
-      res.render('edit', {campgrounds: foundToUpdate})
+      res.render('edit', {campground: foundToUpdate})
     }
   });
 });
 
 app.put('/campgrounds/:id', function(req, res){
-  console.log("Someonw tries to edit");
+  Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updated){
+    if(err){
+      console.log("Error triying to Update");
+      res.redirect('index');
+    }else{
+      console.log("Succesfull update¡");
+      res.redirect('/campgrounds/'+req.params.id);
+    }
+  });
 });
 
 
