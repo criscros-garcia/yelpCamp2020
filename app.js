@@ -4,6 +4,8 @@ let methodOverride = require('method-override');
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 let Campground = require('./models/campground');
+let Comment = require('./models/comment');
+let seedDB = require('./seed');
 
 mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true , useUnifiedTopology: true });
 
@@ -11,7 +13,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use('/css', express.static('css'));
-
+seedDB();
 app.get("/", function(req, res){
   res.render("landing");
 });
