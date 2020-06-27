@@ -54,7 +54,7 @@ app.post('/campgrounds', function(req, res){
 });
 
 app.get('/campgrounds/:id', function(req, res){
-  Campground.findById(req.params.id, function(err, foundCamp){
+  Campground.findById(req.params.id).populate("comments").exec(function(err, foundCamp){
     if(err){
       console.log("Can't be found");
     }else{

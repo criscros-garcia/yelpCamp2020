@@ -20,6 +20,15 @@
       <button class="btn btn-danger w-100">Delete</button>
     </form>
   </div>
+
+  <section>
+    <h1>All Comments</h1>
+    <% campground.comments.forEach(function(comment){ %>
+      <div class="jumbotron">
+        <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
+      </div>
+    <% }); %>
+  </section>
   
   <p>
     <a href='/campgrounds'>Go Back</a>
