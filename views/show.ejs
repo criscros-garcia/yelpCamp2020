@@ -13,7 +13,7 @@
   <div class="my-btn">
     <div class="btn-group d-flex" role="group">
       <a href='/campgrounds/<%= campground._id%>/edit' class='btn btn-primary  w-100'>Edit</a>
-      <a href='/campgrounds' class="btn btn-info     w-100">Make a Comment</a>
+      <a href='/campgrounds/<%= campground._id %>/comments/new' class="btn btn-info     w-100">Make a Comment</a>
     </div>
       
     <form action="/campgrounds/<%= campground._id%>?_method=delete" method='POST'>

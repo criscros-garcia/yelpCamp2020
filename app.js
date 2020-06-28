@@ -35,10 +35,6 @@ app.get('/campgrounds/new', function(req, res){
 });
 
 app.post('/campgrounds', function(req, res){
-  // let name =  req.body.name;
-  // let url  =  req.body.image;
-  // let description = req.body.description;
-  // let newCampground = {name:name, url:url, description:description}
 
   let newCampground = req.body.campground;
 
@@ -47,7 +43,7 @@ app.post('/campgrounds', function(req, res){
       console.log('Error creating a Campground¡');
       console.log(err);
     }else{
-      console.log("Campground created succesfully¡")
+      console.log("Campground created succesfully¡");
       res.redirect('campgrounds');
     }
   });
@@ -92,6 +88,39 @@ app.delete('/campgrounds/:id', function(req, res){
       res.redirect("/campgrounds/+req.params.id");
     }else{
       res.redirect('/campgrounds');
+    }
+  });
+});
+
+// COMMENTS ROUTES
+
+app.get('/campgrounds/:id/comments/new', function(req, res){
+  Campground.findById(req.params.id, function(err, campground){
+    if(err){
+      console.log('Error finding id to make a comment¡');
+    }else{
+      res.render('comments/new', { campground:campground });
+    }
+  });
+});
+
+app.post('/campgrounds/:id/comments/', function(req, res){
+  let newComment = req.body.comment;
+  Campground.findById(req.params.id, function(err, campground){
+    if(err){
+      console.log('Error finding a campground to make a new comment¡');
+      res.redirect('/campgrounds/'+req.params.id);
+    }else{
+      Comment.create(newComment, function(err, commentCreated){
+        if(err){
+          console.log('Error creating new comment');
+        }else{
+          console.log('No fear to success¡');
+          campground.comments.push(commentCreated);
+          campground.save();
+          res.redirect('/campgrounds/'+req.params.id);
+        }
+      });
     }
   });
 });
