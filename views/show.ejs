@@ -26,6 +26,9 @@
     <% campground.comments.forEach(function(comment){ %>
       <div class="jumbotron">
         <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
+        <div class="btn-group d-flex" role="group">
+          <a href='/campgrounds/<%= campground._id%>/comments/<%= comment._id %>/edit' class='btn btn-primary  w-100'>Edit</a>
+        </div>
       </div>
     <% }); %>
   </section>
