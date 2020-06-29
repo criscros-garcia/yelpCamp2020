@@ -159,6 +159,24 @@ app.put('/campgrounds/:id/comments/:comment_id', function(req, res){
   });
 });
 
+app.delete('/campgrounds/:id/comments/:comment_id', function(req, res){
+  Campground.findById(req.params.id, function(err, campground){
+    if(err){
+      console.log('Error finding a campground.')
+    }else{
+      Comment.findByIdAndDelete(req.params.comment_id, function(err){
+        if(err){
+          console.log('Error eliminating a comment¡');
+          res.redirect('/campgrounds/'+req.params.id);
+        }else{
+          console.log('Comment deleted Succesfully¡');
+          res.redirect('/campgrounds/'+req.params.id);
+        }
+      });
+    }
+  });
+});
+
 
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
   console.log("YelpCamp server has started!");
