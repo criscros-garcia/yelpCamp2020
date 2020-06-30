@@ -12,7 +12,7 @@ mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true , useUn
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
-app.use('/css', express.static('css'));
+app.use('/css', express.static(__dirname + "/css"));
 seedDB();
 app.get("/", function(req, res){
   res.render("landing");

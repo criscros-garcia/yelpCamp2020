@@ -12,38 +12,45 @@
       </ul>
     </div>
     <div class="col-md-9">
-      <div class="card text-center mb-4">
-        <div class="card-body">
-          <h3 class="card-title"> <%= campground.name %> </h3>
+      
+      <div class="card text-justify mb-4">
+        <div class="card-header">
+          <h3 class="float-right">$9.00/nigth</h3>
+          <h3 class="card-title"> <a href=""><%= campground.name %></a> </h3>
           <p class="card-text"> <%= campground.description %></p>
         </div>
-        <img class='card-img-bottom' src="<%= campground.url %>" alt="">
-      </div>
+        <!-- <div class="card-body"> -->
+          <img class='card-img-bottom img-fluid' src="<%= campground.url %>" alt="">
+        <!-- </div> -->
       
-      <div class="my-btn">
-        <div class="btn-group d-flex" role="group">
-          <a href='/campgrounds/<%= campground._id%>/edit' class='btn btn-primary  w-100'>Edit</a>
-          <a href='/campgrounds/<%= campground._id %>/comments/new' class="btn btn-info     w-100">Make a Comment</a>
+      <div class="card-footer">
+        <div class="my-btn">
+          <div class="btn-group d-flex" role="group">
+            <a href='/campgrounds/<%= campground._id%>/edit' class='btn btn-primary  w-100'>Edit</a>
+            <a href='/campgrounds/<%= campground._id %>/comments/new' class="btn btn-info     w-100">Make a Comment</a>
+          </div>
+            
+          <form action="/campgrounds/<%= campground._id%>?_method=delete" method='POST'>
+            <button class="btn btn-danger w-100">Delete</button>
+          </form>
         </div>
-          
-        <form action="/campgrounds/<%= campground._id%>?_method=delete" method='POST'>
-          <button class="btn btn-danger w-100">Delete</button>
-        </form>
       </div>
+    </div>
+
     
       <section>
         <h1>All Comments</h1>
-        <% campground.comments.forEach(function(comment){ %>
-          <div class="jumbotron">
-            <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
-            <div class="btn-group d-flex" role="group">
-              <a href='/campgrounds/<%= campground._id%>/comments/<%= comment._id %>/edit' class='btn btn-primary  w-100'>Edit</a>
+        <div class="card text-justify bg-light">
+          <% campground.comments.forEach(function(comment){ %>
+            <div class="card-header">
+              <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
+                <a href='/campgrounds/<%= campground._id%>/comments/<%= comment._id %>/edit' class='btn btn-primary'>Edit</a>
+              <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-danger">Delete</button>
+              </form>
             </div>
-            <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
-              <button class="btn btn-danger">Delete</button>
-            </form>
-          </div>
-        <% }); %>
+          <% }); %>
+        </div>
       </section>
       
       <p>
