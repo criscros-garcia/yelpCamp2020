@@ -17,6 +17,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use('/css', express.static(__dirname + "/css"));
 seedDB();
+// PASSPORT CONFIG
+app.use(require('express-session')({
+  secret: "The Node Power¡",
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser);
+
 app.get("/", function(req, res){
   res.render("landing");
 });
@@ -176,6 +189,24 @@ app.delete('/campgrounds/:id/comments/:comment_id', function(req, res){
           res.redirect('/campgrounds/'+req.params.id);
         }
       });
+    }
+  });
+});
+
+// Auth Routes
+
+app.get('/register', function(req, res){
+  res.render('register');
+});
+
+app.post('/register', function(req, res){
+  let newUser = req.body.user;
+  User.create(newUser, function(err, userCreated){
+    if(err){
+      console.log('Error creating user');
+    }else{
+      console.log('No fear to success, User created');
+      res.send(userCreated);
     }
   });
 });
