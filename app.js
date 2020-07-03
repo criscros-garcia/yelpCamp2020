@@ -28,7 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser);
+passport.deserializeUser(User.deserializeUser());
 
 app.get("/", function(req, res){
   res.render("landing");
@@ -200,18 +200,26 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register', function(req, res){
-  let newUser = req.body.user;
-  User.create(newUser, function(err, userCreated){
-    if(err){
-      console.log('Error creating user');
-    }else{
-      console.log('No fear to success, User created');
-      res.send(userCreated);
+  let newUser = new User({username: req.body.username});
+  let password = req.body.password;
+  User.register(newUser, password, function(err, userCreated){
+    if(err){ console.log(err); return res.render('register');}
+    else{
+      passport.authenticate('local')(req, res, function(err){
+        if(err){
+          // console.log(err);
+          console.log('I cannot Authenticate, sorry');
+          return res.redirect('/register');
+        }else{
+          console.log('Authentication succesfull¡');
+          res.redirect('/campgrounds');
+        }
+      });
     }
-  });
+  });    
 });
 
 
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
   console.log("YelpCamp server has started!");
-});
+});  
