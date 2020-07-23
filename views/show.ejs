@@ -43,7 +43,7 @@
         <div class="card text-justify bg-light">
           <% campground.comments.forEach(function(comment){ %>
             <div class="card-header">
-              <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
+              <p><strong><%= comment.author.username %></strong> - <%= comment.text %></p>
                 <a href='/campgrounds/<%= campground._id%>/comments/<%= comment._id %>/edit' class='btn btn-primary'>Edit</a>
               <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
                 <button class="btn btn-danger">Delete</button>

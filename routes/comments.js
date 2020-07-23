@@ -26,6 +26,9 @@ router.post('/', isLoggedIn, function(req, res){
           console.log('Error creating new comment');
         }else{
           console.log('No fear to success¡');
+          commentCreated.author.id        = req.user._id;
+          commentCreated.author.username  = req.user.username;
+          commentCreated.save();
           campground.comments.push(commentCreated);
           campground.save();
           res.redirect('/campgrounds/'+req.params.id);
