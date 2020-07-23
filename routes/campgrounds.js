@@ -3,7 +3,7 @@ let router     = express.Router();
 let Campground = require('../models/campground');
 
 
-router.get("/campgrounds", function(req, res){
+router.get("/", function(req, res){
   Campground.find({}, function(err, campgrounds){
     if(err){
       console.log(err);
@@ -15,11 +15,11 @@ router.get("/campgrounds", function(req, res){
   
 });
 
-router.get('/campgrounds/new', function(req, res){
+router.get('/new', function(req, res){
   res.render('new');
 });
 
-router.post('/campgrounds', function(req, res){
+router.post('/', function(req, res){
 
   let newCampground = req.body.campground;
 
@@ -29,12 +29,12 @@ router.post('/campgrounds', function(req, res){
       console.log(err);
     }else{
       console.log("Campground created succesfully¡");
-      res.redirect('campgrounds');
+      res.redirect('/campgrounds');
     }
   });
 });
 
-router.get('/campgrounds/:id', function(req, res){
+router.get('/:id', function(req, res){
   Campground.findById(req.params.id).populate("comments").exec(function(err, foundCamp){
     if(err){
       console.log("Can't be found");
@@ -44,7 +44,7 @@ router.get('/campgrounds/:id', function(req, res){
   });
 });
 
-router.get('/campgrounds/:id/edit', function(req, res){
+router.get('/:id/edit', function(req, res){
   Campground.findById(req.params.id, function(err, foundToUpdate){
     if(err){
       console.log('Could not be found to update¡'+ err);
@@ -54,7 +54,7 @@ router.get('/campgrounds/:id/edit', function(req, res){
   });
 });
 
-router.put('/campgrounds/:id', function(req, res){
+router.put('/:id', function(req, res){
   Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updated){
     if(err){
       console.log("Error triying to Update");
@@ -66,11 +66,11 @@ router.put('/campgrounds/:id', function(req, res){
   });
 });
 
-router.delete('/campgrounds/:id', function(req, res){
+router.delete('/:id', function(req, res){
   Campground.findByIdAndDelete(req.params.id, function(err){
     if(err){
       console.log("Error triying to eliminate¡");
-      res.redirect("/campgrounds/+req.params.id");
+      res.redirect("/campgrounds/"+req.params.id);
     }else{
       res.redirect('/campgrounds');
     }

@@ -38,7 +38,7 @@ app.use(methodOverride('_method'));
 app.use('/css', express.static(__dirname + "/css"));
 seedDB();
 
-app.use(campgroundRoutes);
+app.use('/campgrounds', campgroundRoutes);
 app.use(commentRoutes);
 app.use(indexRoutes);
 
