@@ -1,10 +1,10 @@
 let express    = require('express');
-let router     = express.Router();
+let router     = express.Router({mergeParams: true});
 let Campground = require('../models/campground');
 let Comment    = require('../models/comment');
 // COMMENTS ROUTES
 
-router.get('/campgrounds/:id/comments/new', isLoggedIn, function(req, res){
+router.get('/new', isLoggedIn, function(req, res){
   Campground.findById(req.params.id, function(err, campground){
     if(err){
       console.log('Error finding id to make a comment¡');
@@ -14,7 +14,7 @@ router.get('/campgrounds/:id/comments/new', isLoggedIn, function(req, res){
   });
 });
 
-router.post('/campgrounds/:id/comments/', isLoggedIn, function(req, res){
+router.post('/', isLoggedIn, function(req, res){
   let newComment = req.body.comment;
   Campground.findById(req.params.id, function(err, campground){
     if(err){
@@ -35,7 +35,7 @@ router.post('/campgrounds/:id/comments/', isLoggedIn, function(req, res){
   });
 });
 
-router.get('/campgrounds/:id/comments/:comment_id/edit', function(req, res){
+router.get('/:comment_id/edit', function(req, res){
   Campground.findById(req.params.id, function(err, campground){
     if(err){
       console.log('Error finding id to make a comment¡');
@@ -52,7 +52,7 @@ router.get('/campgrounds/:id/comments/:comment_id/edit', function(req, res){
   });
 });
 
-router.put('/campgrounds/:id/comments/:comment_id', function(req, res){
+router.put('/:comment_id', function(req, res){
   Campground.findById(req.params.id, function(err, campFounded){
     if(err){
       console.log('Error finding campground for updating a comment¡');
@@ -69,7 +69,7 @@ router.put('/campgrounds/:id/comments/:comment_id', function(req, res){
   });
 });
 
-router.delete('/campgrounds/:id/comments/:comment_id', function(req, res){
+router.delete('/:comment_id', function(req, res){
   Campground.findById(req.params.id, function(err, campground){
     if(err){
       console.log('Error finding a campground.')

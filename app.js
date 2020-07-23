@@ -39,7 +39,7 @@ app.use('/css', express.static(__dirname + "/css"));
 seedDB();
 
 app.use('/campgrounds', campgroundRoutes);
-app.use(commentRoutes);
+app.use('/campgrounds/:id/comments', commentRoutes);
 app.use(indexRoutes);
 
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
