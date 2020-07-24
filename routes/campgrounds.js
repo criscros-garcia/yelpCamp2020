@@ -15,13 +15,18 @@ router.get("/", function(req, res){
   
 });
 
-router.get('/new', function(req, res){
+router.get('/new', isLoggedIn, function(req, res){
   res.render('new');
 });
 
-router.post('/', function(req, res){
+router.post('/', isLoggedIn ,function(req, res){
 
   let newCampground = req.body.campground;
+  let author = {
+    id:       req.user._id,
+    username: req.user.username
+  }
+  newCampground.author = author;
 
   Campground.create(newCampground, function(err, newCreated){
     if(err){
@@ -76,5 +81,12 @@ router.delete('/:id', function(req, res){
     }
   });
 });
+
+function isLoggedIn(req, res, next){
+  if(req.isAuthenticated()){
+    return next();
+  }
+  res.redirect('/login');
+}
 
 module.exports = router;
