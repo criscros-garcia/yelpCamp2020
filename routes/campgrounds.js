@@ -1,6 +1,7 @@
 let express    = require('express');
 let router     = express.Router({mergeParams: true});
 let Campground = require('../models/campground');
+const campground = require('../models/campground');
 
 
 router.get("/", function(req, res){
@@ -49,17 +50,17 @@ router.get('/:id', function(req, res){
   });
 });
 
-router.get('/:id/edit', function(req, res){
+router.get('/:id/edit', checkCampgroundOwnership ,function(req, res){
   Campground.findById(req.params.id, function(err, foundToUpdate){
     if(err){
       console.log('Could not be found to update¡'+ err);
     }else{
-      res.render('edit', {campground: foundToUpdate})
+      res.render('edit', {campground: foundToUpdate});
     }
   });
 });
 
-router.put('/:id', function(req, res){
+router.put('/:id', checkCampgroundOwnership ,function(req, res){
   Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updated){
     if(err){
       console.log("Error triying to Update");
@@ -71,7 +72,7 @@ router.put('/:id', function(req, res){
   });
 });
 
-router.delete('/:id', function(req, res){
+router.delete('/:id', checkCampgroundOwnership ,function(req, res){
   Campground.findByIdAndDelete(req.params.id, function(err){
     if(err){
       console.log("Error triying to eliminate¡");
@@ -88,5 +89,28 @@ function isLoggedIn(req, res, next){
   }
   res.redirect('/login');
 }
+
+function checkCampgroundOwnership(req, res, next){
+  if(req.isAuthenticated()){
+    Campground.findById(req.params.id, function(err, foundCamp){
+      if(err){
+        console.log(err);
+        res.redirect("back");
+      }else{
+        if(foundCamp.author.id.equals(req.user._id)){
+          next();
+        }else{
+          console.log("The post does not belong to you¡");
+          res.redirect("/campgrounds/"+req.params.id);
+        }
+      }
+    })
+  }else{
+    console.log("Please Log in First¡");
+    res.redirect("/login");
+  }
+}
+
+
 
 module.exports = router;
