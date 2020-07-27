@@ -38,7 +38,7 @@ router.post('/', isLoggedIn, function(req, res){
   });
 });
 
-router.get('/:comment_id/edit', function(req, res){
+router.get('/:comment_id/edit', checkCommentOwnership ,function(req, res){
   Campground.findById(req.params.id, function(err, campground){
     if(err){
       console.log('Error finding id to make a comment¡');
@@ -55,7 +55,7 @@ router.get('/:comment_id/edit', function(req, res){
   });
 });
 
-router.put('/:comment_id', function(req, res){
+router.put('/:comment_id', checkCommentOwnership ,function(req, res){
   Campground.findById(req.params.id, function(err, campFounded){
     if(err){
       console.log('Error finding campground for updating a comment¡');
@@ -72,7 +72,7 @@ router.put('/:comment_id', function(req, res){
   });
 });
 
-router.delete('/:comment_id', function(req, res){
+router.delete('/:comment_id', checkCommentOwnership ,function(req, res){
   Campground.findById(req.params.id, function(err, campground){
     if(err){
       console.log('Error finding a campground.')
@@ -95,6 +95,27 @@ function isLoggedIn(req, res, next){
     return next();
   }
   res.redirect('/login');
+}
+
+function checkCommentOwnership(req, res, next){
+  if(req.isAuthenticated()){
+    Comment.findById(req.params.comment_id, function(err, foundComment){
+      if(err){
+        console.log("Comment not found "+err);
+        res.redirect("back");
+      }else{
+        if(foundComment.author.id.equals(req.user._id)){
+          next();
+        }else{
+          console.log("You can only edit/delete your comments¡ ");
+          res.redirect("/campgrounds/"+req.params.id);
+        }
+      }
+    });
+  }else{
+    console.log("Please, log in first¡");
+    res.redirect('/login');
+  }
 }
 
 module.exports = router;
