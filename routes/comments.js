@@ -5,14 +5,8 @@ let Comment    = require('../models/comment');
 // COMMENTS ROUTES
 
 router.get('/new', isLoggedIn, function(req, res){
-  Campground.findById(req.params.id, function(err, campground){
-    if(err){
-      console.log('Error finding id to make a comment¡');
-    }else{
-      res.render('comments/new', { campground:campground });
-    }
+      res.render('comments/new', { campground_id:req.params.id });
   });
-});
 
 router.post('/', isLoggedIn, function(req, res){
   let newComment = req.body.comment;
@@ -39,53 +33,34 @@ router.post('/', isLoggedIn, function(req, res){
 });
 
 router.get('/:comment_id/edit', checkCommentOwnership ,function(req, res){
-  Campground.findById(req.params.id, function(err, campground){
-    if(err){
-      console.log('Error finding id to make a comment¡');
-    }else{
       Comment.findById(req.params.comment_id, function(err, commentFound){
         if(err){
           console.log('Error finding that comment id');
         }else{
           console.log('No fear to succes¡');
-          res.render('comments/edit',{campground: campground, comment:commentFound});
+          res.render('comments/edit',{campground_id: req.params.id, comment:commentFound});
         }
       });
-    }
-  });
-});
+    });
 
 router.put('/:comment_id', checkCommentOwnership ,function(req, res){
-  Campground.findById(req.params.id, function(err, campFounded){
-    if(err){
-      console.log('Error finding campground for updating a comment¡');
-    }else{
-      Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, commentUpdated){
-        if(err){
-          console.log('Error updating the comment');
-          res.redirect('/campgrounds/'+req.params.id);
-        }else{
-          res.redirect('/campgrounds/'+req.params.id);
-        }
-      });
-    }
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, commentUpdated){
+      if(err){
+        res.redirect('back');
+      }else{
+        res.redirect('/campgrounds/'+req.params.id);
+      }
+    });
   });
-});
 
 router.delete('/:comment_id', checkCommentOwnership ,function(req, res){
-  Campground.findById(req.params.id, function(err, campground){
+  Comment.findByIdAndDelete(req.params.comment_id, function(err){
     if(err){
-      console.log('Error finding a campground.')
+      console.log('Error eliminating a comment¡');
+      res.redirect('/campgrounds/'+req.params.id);
     }else{
-      Comment.findByIdAndDelete(req.params.comment_id, function(err){
-        if(err){
-          console.log('Error eliminating a comment¡');
-          res.redirect('/campgrounds/'+req.params.id);
-        }else{
-          console.log('Comment deleted Succesfully¡');
-          res.redirect('/campgrounds/'+req.params.id);
-        }
-      });
+      console.log('Comment deleted Succesfully¡');
+      res.redirect('/campgrounds/'+req.params.id);
     }
   });
 });
