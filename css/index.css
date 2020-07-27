@@ -8,10 +8,7 @@
   margin: 0 auto;
 }
 
-#delete-campgrounds-form{
+#delete-form{
   display: inline;
 }
 
-#delete-comments-form{
-  display: inline;
-}
