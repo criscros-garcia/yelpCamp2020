@@ -13,6 +13,15 @@ let campgroundRoutes = require('./routes/campgrounds');
 let commentRoutes    = require('./routes/comments');
 let indexRoutes      = require('./routes/index');
 
+mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true , useUnifiedTopology: true });
+
+app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride('_method'));
+app.use('/css', express.static(__dirname + "/css"));
+app.use(flash());
+// seedDB();
+
 // PASSPORT CONFIG
 app.use(require('express-session')({
   secret: "The Node Power¡",
@@ -28,17 +37,12 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
   res.locals.currentUser = req.user;
+  res.locals.error       = req.flash("error");
+  res.locals.success     = req.flash("success");
   next();
 });
 
-mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true , useUnifiedTopology: true });
 
-app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(methodOverride('_method'));
-app.use(flash());
-app.use('/css', express.static(__dirname + "/css"));
-// seedDB();
 
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);

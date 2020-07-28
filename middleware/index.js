@@ -7,6 +7,7 @@ middlewareObj.isLoggedIn = function(req, res, next){
   if(req.isAuthenticated()){
     return next();
   }
+  req.flash("error","Please Login First¡");
   res.redirect('/login');
 }
 
@@ -14,13 +15,13 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next){
   if(req.isAuthenticated()){
     Campground.findById(req.params.id, function(err, foundCamp){
       if(err){
-        console.log(err);
+        req.flash("error", err.message);
         res.redirect("back");
       }else{
         if(foundCamp.author.id.equals(req.user._id)){
           next();
         }else{
-          console.log("The post does not belong to you¡");
+          req.flash("error", "The post does not belong to you¡");
           res.redirect("/campgrounds/"+req.params.id);
         }
       }
@@ -35,13 +36,13 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
   if(req.isAuthenticated()){
     Comment.findById(req.params.comment_id, function(err, foundComment){
       if(err){
-        console.log("Comment not found "+err);
+        req.flash("error", err.message);
         res.redirect("back");
       }else{
         if(foundComment.author.id.equals(req.user._id)){
           next();
         }else{
-          console.log("You can only edit/delete your comments¡ ");
+          req.flash("error", "You can only edit/delete your comments¡");
           res.redirect("/campgrounds/"+req.params.id);
         }
       }

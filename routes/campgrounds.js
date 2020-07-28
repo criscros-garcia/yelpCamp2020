@@ -2,6 +2,7 @@ let express    = require('express');
 let router     = express.Router({mergeParams: true});
 let Campground = require('../models/campground');
 let middleware = require('../middleware');
+let flash = require('connect-flash');
 
 router.get("/", function(req, res){
   Campground.find({}, function(err, campgrounds){
@@ -30,10 +31,10 @@ router.post('/', middleware.isLoggedIn ,function(req, res){
 
   Campground.create(newCampground, function(err, newCreated){
     if(err){
-      console.log('Error creating a Campground¡');
-      console.log(err);
+      req.flash("error", "Campground could not be created¡");
     }else{
       console.log("Campground created succesfully¡");
+      req.flash("success", "Campground created succesfully!");
       res.redirect('/campgrounds');
     }
   });
@@ -63,9 +64,11 @@ router.put('/:id', middleware.checkCampgroundOwnership ,function(req, res){
   Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updated){
     if(err){
       console.log("Error triying to Update");
+      req.flash("error", "Error triying to Update¡");
       res.redirect('index');
     }else{
       console.log("Succesfull update¡");
+      req.flash("success", "Campground updated succesfully¡");
       res.redirect('/campgrounds/'+req.params.id);
     }
   });
@@ -77,6 +80,7 @@ router.delete('/:id', middleware.checkCampgroundOwnership ,function(req, res){
       console.log("Error triying to eliminate¡");
       res.redirect("/campgrounds/"+req.params.id);
     }else{
+      req.flash("success", "Campground deleted succesfully¡");
       res.redirect('/campgrounds');
     }
   });
