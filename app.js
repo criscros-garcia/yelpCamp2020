@@ -7,6 +7,7 @@ let passport = require('passport');
 let localStrategy = require('passport-local');
 let User = require('./models/user');
 let seedDB = require('./seed');
+let flash = require('connect-flash');
 
 let campgroundRoutes = require('./routes/campgrounds');
 let commentRoutes    = require('./routes/comments');
@@ -35,6 +36,7 @@ mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true , useUn
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
+app.use(flash());
 app.use('/css', express.static(__dirname + "/css"));
 // seedDB();
 
