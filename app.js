@@ -18,7 +18,7 @@ mongoose.connect("mongodb://localhost/yelpCamp",  {useNewUrlParser: true , useUn
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
-app.use('/css', express.static(__dirname + "/css"));
+app.use('/public/stylesheets', express.static(__dirname + "/public/stylesheets"));
 app.use(flash());
 // seedDB();
 
